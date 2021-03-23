@@ -1,25 +1,34 @@
 from tkinter import *
 from tkinter import messagebox
+import pathlib
 
 class GlobalHelper:
+    SERVER_HOST = 'remotemysql.com'
+    SERVER_USERNAME = 'cm5KWxZxSc'
+    SERVER_PASSWORD = 'AAvuVZBFAX'
+    SERVER_DATABASE = 'cm5KWxZxSc'
+
+
     theme_color = '#6159e6'
     gray_color = '#c9c9c9'
-    logo = PhotoImage(file='.//images//logo.png')
-    login_cover = PhotoImage(file='.//images//login.png')
-    register_cover = PhotoImage(file='.//images//register.png')
+    user_json = '.\\lib\\_storage_\\user_info.json'
+    logo = PhotoImage(file='.//lib//images//logo.png')
+    login_cover = PhotoImage(file='.//lib//images//login.png')
+    register_cover = PhotoImage(file='.//lib//images//register.png')
 
-    icon_exit = PhotoImage(file='.//images//home-icons//exit.png')
-    icon_library = PhotoImage(file='.//images//home-icons//library.png')
-    icon_book = PhotoImage(file='.//images//home-icons//book.png')
-    icon_members = PhotoImage(file='.//images//home-icons//members.png')
-    icon_question = PhotoImage(file='.//images//home-icons//question.png')
-    icon_wishlist = PhotoImage(file='.//images//home-icons//wishlist.png')
-    icon_profile = PhotoImage(file='.//images//home-icons//profile.png')
+    icon_exit = PhotoImage(file='.//lib//images//home-icons//exit.png')
+    icon_library = PhotoImage(file='.//lib//images//home-icons//library.png')
+    icon_book = PhotoImage(file='.//lib//images//home-icons//book.png')
+    icon_members = PhotoImage(file='.//lib//images//home-icons//members.png')
+    icon_question = PhotoImage(file='.//lib//images//home-icons//question.png')
+    icon_wishlist = PhotoImage(file='.//lib//images//home-icons//wishlist.png')
+    icon_profile = PhotoImage(file='.//lib//images//home-icons//profile.png')
 
 def ViewSection(_Root_, section_path):
     _Root_.show_frame(section_path)
 
 class HelperFunction:
+    ROOT_PATH = ''
     def create_home_button(root_frame, _root_, section_frame, section_title, section_path):
         section_frame.grid_columnconfigure(0, weight=1)
         section_frame.grid_columnconfigure(1, weight=1)
@@ -48,3 +57,7 @@ class HelperFunction:
 
         button_two = Label(Inner_layer, text=section_title, bg='#fff', font=("Bahnschrift SemiLight Condensed", 15))
         button_two.pack(pady=15)
+
+    def SetRootPATH(PATH):
+        global ROOT_PATH
+        ROOT_PATH = PATH

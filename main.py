@@ -1,15 +1,18 @@
 from tkinter import *
 import mysql.connector
 import json
+import os
 
 root = Tk()
 screen_size = "1000x700"
 root.title("The Book Lounge")
 root.geometry(screen_size)
+from global_variables import GlobalHelper, HelperFunction
 
-from global_variables import GlobalHelper
 
 root.tk.call('wm', 'iconphoto', root._w, GlobalHelper.logo)
+
+HelperFunction.SetRootPATH(os.path.dirname(os.path.abspath(__file__)))
 
 class __Root__:
     def show_frame(path):
@@ -34,9 +37,10 @@ Manage_Account = Frame(root, bg='#fff')
 for frame in (Authentication_Login, Authentication_Register, Dashboard_Manager, Manage_Account):
     frame.grid(row=0, column=0, sticky='nsew')
 
-import authentication
-import dashboard
-import account
+
+import lib.views.authentication as authentication
+import lib.views.dashboard as dashboard
+import lib.views.account as account
 
 def authentication_login_view():
     authentication.login(Authentication_Login, __Root__)
@@ -50,7 +54,7 @@ def dashobard_manager_view():
 def manage_account():
     account.manage_account(Manage_Account, __Root__)
 
-with open('user_info.json', 'r') as json_file:
+with open(GlobalHelper.user_json) as json_file:
     user_info = json.load(json_file)
     if len(str(user_info['token'])) == 0:
         __Root__.show_frame("Authentication_Login")
