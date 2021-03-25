@@ -58,7 +58,7 @@ def manager_dashboard(Root_Frame, _Root_):
     section_frame_six = Frame(Root_Frame, bg='#fff')
     section_frame_six.grid(row=3, column=1, sticky="nsew")
 
-    HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_one, 'Manage Library', '')
+    HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_one, 'Manage Library', 'Manage_Library')
     HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_two, 'Manage Books', '')
     HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_three, 'Manage Members', '')
     HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_four, 'Manage Book Request', '')

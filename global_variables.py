@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import pathlib
+import paramiko
 
 class GlobalHelper:
     SERVER_HOST = 'remotemysql.com'
@@ -25,6 +26,7 @@ class GlobalHelper:
     icon_profile = PhotoImage(file='.//lib//images//home-icons//profile.png')
 
 def ViewSection(_Root_, section_path):
+    print(section_path)
     _Root_.show_frame(section_path)
 
 class HelperFunction:
@@ -61,3 +63,15 @@ class HelperFunction:
     def SetRootPATH(PATH):
         global ROOT_PATH
         ROOT_PATH = PATH
+
+    def Upload_to_server(selected_file, unique_filename):
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname="134.209.158.52", username="root", password="123asd.!@#ASD", port=22)
+        sftp_client = ssh.open_sftp()
+
+        # sftp_client.get('/var/www/html/library/init.txt', 'download-init.txt')
+        sftp_client.put(selected_file, '/var/www/html/library/'+unique_filename)
+
+        sftp_client.close()
+        ssh.close()

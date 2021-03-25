@@ -1,1 +1,9 @@
-{"name": "", "email": "", "address": "", "avatar": "", "phone": "", "token": "", "user_type": 1}
+{
+  "name": "Ahmed Zobayer",
+  "email": "zobayer.me@gmail.com",
+  "address": "shahi tower, sector 7, plot k/25, Jashoree",
+  "avatar": "d9f59fa7-db5f-492a-a602-26280d09aa1e.jpg",
+  "phone": "018652585",
+  "token": "938c03285c0ad3acf383dd16bd0b3f23",
+  "user_type": 1
+}
