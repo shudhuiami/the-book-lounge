@@ -118,7 +118,7 @@ def manage_library(Root_Frame, _Root_):
     Label(screen_left_frame, text="Manage Library", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(
         row=1, column=1, pady=10)
     if logged_user['avatar'] is None:
-        Label(screen_left_frame, text="Select Avatar", bg=GlobalHelper.gray_color, height=12, width=32,
+        Label(screen_left_frame, text="Select Library Logo", bg=GlobalHelper.gray_color, height=12, width=32,
               font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1)
     else:
         render_avatar(screen_left_frame, str(logged_user['avatar']))

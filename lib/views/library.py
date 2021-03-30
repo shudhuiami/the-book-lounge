@@ -65,7 +65,7 @@ def SaveUpdates(_Root_):
         user_info['phone'] = phone
 
     if account_avatar != '':
-        user_info['avatar'] = account_avatar
+        user_info['logo'] = account_avatar
 
 
     mydb = mysql.connector.connect(host=GlobalHelper.SERVER_HOST, user=GlobalHelper.SERVER_USERNAME, password=GlobalHelper.SERVER_PASSWORD, database=GlobalHelper.SERVER_DATABASE)
@@ -73,12 +73,12 @@ def SaveUpdates(_Root_):
     if password != '':
         HASH_PASS = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         sql = "UPDATE users SET name=%s, avatar=%s, password=%s, address=%s, phone=%s WHERE token=%s"
-        val = (user_info['name'], user_info['avatar'], HASH_PASS, user_info['address'], user_info['phone'], user_info['token'])
+        val = (user_info['name'], user_info['logo'], HASH_PASS, user_info['address'], user_info['phone'], user_info['token'])
         mycursor.execute(sql, val)
         mydb.commit()
     else:
         sql = "UPDATE users SET name=%s, avatar=%s, address=%s, phone=%s WHERE token=%s"
-        val = (user_info['name'], user_info['avatar'], user_info['address'], user_info['phone'], user_info['token'])
+        val = (user_info['name'], user_info['logo'], user_info['address'], user_info['phone'], user_info['token'])
         mycursor.execute(sql, val)
         mydb.commit()
 
@@ -88,7 +88,7 @@ def SaveUpdates(_Root_):
     _Root_.show_frame("Dashboard_Manager")
 
 def manage_library(Root_Frame, _Root_):
-    json_file = open(GlobalHelper.user_json, 'r')
+    json_file = open(GlobalHelper.library_info_json, 'r')
     logged_user = json.load(json_file)
 
     if logged_user['name'] is not None:
@@ -117,11 +117,11 @@ def manage_library(Root_Frame, _Root_):
 
     Label(screen_left_frame, text="Manage Library", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(
         row=1, column=1, pady=10)
-    if logged_user['avatar'] is None:
-        Label(screen_left_frame, text="Select Avatar", bg=GlobalHelper.gray_color, height=12, width=32,
+    if logged_user['logo'] is None:
+        Label(screen_left_frame, text="Select Library Logo", bg=GlobalHelper.gray_color, height=12, width=32,
               font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1)
     else:
-        render_avatar(screen_left_frame, str(logged_user['avatar']))
+        render_avatar(screen_left_frame, str(logged_user['logo']))
 
     Button(screen_left_frame, text="CHOOSE LOGO", bg=GlobalHelper.theme_color,
            command=lambda: SelectImage(Root_Frame, _Root_, screen_left_frame),
@@ -145,18 +145,17 @@ def manage_library(Root_Frame, _Root_):
     Label(screen_login_frame, text="Library Name", bg='#ffffff').grid(row=1, column=1, pady=1, sticky=NW, )
     Entry(screen_login_frame, textvariable=account_name, width=70, relief=SOLID).grid(row=2, column=1, pady=3, ipady=5)
 
-    Label(screen_login_frame, text="Phone", bg='#ffffff').grid(row=3, column=1, pady=1, sticky=NW, )
+    Label(screen_login_frame, text="Email Address", bg='#ffffff').grid(row=3, column=1, pady=1, sticky=NW, )
     Entry(screen_login_frame, textvariable=account_phone, width=70, relief=SOLID).grid(row=4, column=1, pady=3, ipady=5)
 
-    Label(screen_login_frame, text="Street Address", bg='#ffffff').grid(row=5, column=1, pady=1, sticky=NW, )
+    Label(screen_login_frame, text="Phone", bg='#ffffff').grid(row=5, column=1, pady=1, sticky=NW, )
     Entry(screen_login_frame, textvariable=account_address, width=70, relief=SOLID).grid(row=6, column=1, pady=3,
                                                                                          ipady=5)
-
-    Label(screen_login_frame, text="New Password", bg='#ffffff').grid(row=7, column=1, pady=1, sticky=NW)
+    Label(screen_login_frame, text="Street Address", bg='#ffffff').grid(row=7, column=1, pady=1, sticky=NW)
     Entry(screen_login_frame, textvariable=account_password, show='*', width=70, relief=SOLID).grid(row=8, column=1,
                                                                                                     pady=3, ipady=5)
 
-    Button(screen_login_frame, text="Update", bg=GlobalHelper.theme_color, command=lambda: SaveUpdates(_Root_),
+    Button(screen_login_frame, text="Save", bg=GlobalHelper.theme_color, command=lambda: SaveUpdates(_Root_),
            fg='#fff', width='25', height='1', borderwidth=0, relief=SOLID).grid(row=9, column=1, ipady=5, pady=10,
                                                                                 sticky=NW)
     Button(screen_login_frame, text="Cancel", bg=GlobalHelper.gray_color,

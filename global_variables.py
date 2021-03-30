@@ -13,6 +13,7 @@ class GlobalHelper:
     theme_color = '#6159e6'
     gray_color = '#c9c9c9'
     user_json = '.\\lib\\_storage_\\user_info.json'
+    library_info_json = '.\\lib\\_storage_\\library.json'
     logo = PhotoImage(file='.//lib//images//logo.png')
     login_cover = PhotoImage(file='.//lib//images//login.png')
     register_cover = PhotoImage(file='.//lib//images//register.png')
