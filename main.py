@@ -32,6 +32,9 @@ class __Root__:
             manage_account()
         elif path == 'Manage_Library':
             manage_library()
+        elif path == 'Library_List':
+            library_list_view()
+
 
 
 
@@ -43,6 +46,7 @@ Authentication_Register = Frame(root, bg='#fff')
 Dashboard_Manager = Frame(root, bg='#fff')
 Manage_Account = Frame(root, bg='#fff')
 Manage_Library = Frame(root, bg='#fff')
+Library_List = Frame(root, bg='#fff')
 
 for frame in (Authentication_Login, Authentication_Register, Dashboard_Manager, Manage_Account, Manage_Library):
     frame.grid(row=0, column=0, sticky='nsew')
@@ -52,6 +56,7 @@ import lib.views.authentication as authentication
 import lib.views.dashboard as dashboard
 import lib.views.account as account
 import lib.views.library as library
+import lib.views.library_list as library_list
 
 def authentication_login_view():
     authentication.login(Authentication_Login, __Root__)
@@ -67,6 +72,10 @@ def manage_account():
 
 def manage_library():
     library.manage_library(Manage_Library, __Root__)
+
+def library_list_view():
+    library_list.library_list(Manage_Library, __Root__)
+
 
 
 
