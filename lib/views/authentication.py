@@ -91,6 +91,21 @@ def RegisterUser(_Root_):
     val = (name, email, reg_user_type, HASH_PASS)
     mycursor.execute(sql, val)
     mydb.commit()
+    reg_user_id = mycursor.lastrowid
+
+    if reg_user_type == 1:
+        library_name = 'library of '+name
+        library_sql = "INSERT INTO libraries (title, email) VALUES (%s, %s)"
+        library_val = (library_name, email)
+        mycursor.execute(library_sql, library_val)
+        mydb.commit()
+        reg_library_id = mycursor.lastrowid
+
+        library_member_sql = "INSERT INTO library_members (library_id, member_id, member_type) VALUES (%s, %s, %s)"
+        library_member_val = (reg_library_id, reg_user_id, 1)
+        mycursor.execute(library_member_sql, library_member_val)
+        mydb.commit()
+
     _Root_.show_frame("Authentication_Login")
     messagebox.showinfo("Information", "Registration Successful. Please login")
     reg_name.set('')
@@ -162,6 +177,7 @@ def LoginUser(_Root_):
             with open(GlobalHelper.user_json, 'r') as json_file:
                 user_info = json.load(json_file)
 
+            user_info['id'] = row[field_map['id']]
             user_info['name'] = row[field_map['name']]
             user_info['email'] = row[field_map['email']]
             user_info['address'] = row[field_map['address']]
@@ -169,6 +185,27 @@ def LoginUser(_Root_):
             user_info['avatar'] = row[field_map['avatar']]
             user_info['phone'] = row[field_map['phone']]
             user_info['token'] = auth_token
+
+            if user_info['user_type'] == 1:
+                member_id = str(row[field_map['id']])
+                mycursor.execute("SELECT libraries.* FROM library_members LEFT JOIN libraries on libraries.id = library_members.library_id WHERE library_members.member_id='" + member_id + "'")
+                library_map = fields(mycursor)
+                for row in mycursor:
+
+                    with open(GlobalHelper.library_info_json, 'r') as library_json_file:
+                        library_info = json.load(library_json_file)
+
+                    library_info['id'] = row[library_map['id']]
+                    library_info['title'] = row[library_map['title']]
+                    library_info['logo'] = row[library_map['logo']]
+                    library_info['email'] = row[library_map['email']]
+                    library_info['phone'] = row[library_map['phone']]
+                    library_info['address'] = row[library_map['address']]
+                    library_info['about_us'] = row[library_map['about_us']]
+
+                    with open(GlobalHelper.library_info_json, 'w') as library_json_file:
+                        json.dump(library_info, library_json_file)
+
 
             with open(GlobalHelper.user_json, 'w') as json_file:
                 json.dump(user_info, json_file)

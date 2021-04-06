@@ -23,19 +23,26 @@ account_password = StringVar()
 
 def SelectImage(Root_Frame, _Root_, screen_left_frame):
     global account_avatar
+    Button(screen_left_frame, text="Uploading Picture...", bg=GlobalHelper.theme_color,
+           fg='#fff', width='30', height='1', borderwidth=0, relief=SOLID).grid(row=3, column=1, ipady= 5, pady=5)
     selected_file = filedialog.askopenfilename()
-    extension = os.path.splitext(selected_file)[1]
-    unique_filename = str(uuid.uuid4()) + extension
-    shutil.copy(selected_file, UPLOAD_URL+unique_filename)
-    HelperFunction.Upload_to_server(selected_file, unique_filename)
-    account_avatar = unique_filename
-    render_avatar(screen_left_frame, unique_filename)
+
+    if len(selected_file) > 0:
+        extension = os.path.splitext(selected_file)[1]
+        unique_filename = str(uuid.uuid4()) + extension
+        HelperFunction.Upload_to_server(selected_file, unique_filename)
+        account_avatar = unique_filename
+        render_avatar(screen_left_frame, unique_filename)
+
+    Button(screen_left_frame, text="Choose Picture", bg=GlobalHelper.theme_color,
+           command=lambda: SelectImage(Root_Frame, _Root_, screen_left_frame),
+           fg='#fff', width='30', height='1', borderwidth=0, relief=SOLID).grid(row=3, column=1, ipady=5, pady=5)
 
 def render_avatar(screen_left_frame, image_file):
     if image_file != '':
         img_url = SERVER_URL+image_file
         im = Image.open(requests.get(img_url, stream=True).raw)
-        tkimage = ImageTk.PhotoImage(im.resize((300, 300)))
+        tkimage = ImageTk.PhotoImage(im.resize((150, 150)))
         myvar = Label(screen_left_frame, bg='#ffffff', image=tkimage)
         myvar.image = tkimage
         myvar.grid(row=2, column=1, sticky="nsew")
@@ -120,11 +127,11 @@ def manage_account(Root_Frame, _Root_):
 
     Label(screen_left_frame, text="Manage Account", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(row=1, column=1, pady=10)
     if logged_user['avatar'] is None:
-        Label(screen_left_frame, text="Select Avatar", bg=GlobalHelper.gray_color, height= 12, width=32,  font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1)
+        Label(screen_left_frame, text="Select Profile Picture", bg=GlobalHelper.gray_color, height= 12, width=32,  font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1)
     else:
         render_avatar(screen_left_frame, str(logged_user['avatar']))
 
-    Button(screen_left_frame, text="CHOOSE AVATAR", bg=GlobalHelper.theme_color, command=lambda: SelectImage(Root_Frame, _Root_, screen_left_frame),
+    Button(screen_left_frame, text="Choose Picture", bg=GlobalHelper.theme_color, command=lambda: SelectImage(Root_Frame, _Root_, screen_left_frame),
            fg='#fff', width='30', height='1', borderwidth=0, relief=SOLID).grid(row=3, column=1, ipady= 5, pady=5)
 
 

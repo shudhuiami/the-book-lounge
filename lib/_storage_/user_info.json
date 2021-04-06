@@ -1,9 +1,1 @@
-{
-  "name": "Ahmed Zobayer",
-  "email": "zobayer.me@gmail.com",
-  "address": "shahi tower, sector 7, plot k/25, Jashoree",
-  "avatar": "d9f59fa7-db5f-492a-a602-26280d09aa1e.jpg",
-  "phone": "018652585",
-  "token": "938c03285c0ad3acf383dd16bd0b3f23",
-  "user_type": 1
-}
+{"id": 11, "name": "Malik Saifullah", "email": "member1@gmail.com", "address": null, "avatar": "5a396b4c-c8dd-4015-95e6-891bd9728476.png", "phone": "0189653525", "token": "6e194cc7210ce655de50d40ad24fe328", "user_type": 2}

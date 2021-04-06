@@ -1,1 +1,0 @@
-from tkinter import *import pathlibclass Root_path:    path = str(pathlib.Path().absolute())

@@ -15,17 +15,16 @@ import requests
 UPLOAD_URL = str(pathlib.Path().absolute())+'\\uploads\\'
 SERVER_URL = 'http://134.209.158.52/library/'
 account_avatar = ''
-account_name = StringVar()
-account_address = StringVar()
-account_phone = StringVar()
-account_password = StringVar()
+library_name = StringVar()
+library_email = StringVar()
+library_phone = StringVar()
+library_address = StringVar()
 
 def SelectImage(Root_Frame, _Root_, screen_left_frame):
     global account_avatar
     selected_file = filedialog.askopenfilename()
     extension = os.path.splitext(selected_file)[1]
     unique_filename = str(uuid.uuid4()) + extension
-    shutil.copy(selected_file, UPLOAD_URL+unique_filename)
     HelperFunction.Upload_to_server(selected_file, unique_filename)
     account_avatar = unique_filename
     render_avatar(screen_left_frame, unique_filename)
@@ -42,63 +41,62 @@ def render_avatar(screen_left_frame, image_file):
 def SaveUpdates(_Root_):
     global account_avatar
 
-    name = account_name.get()
-    address = account_address.get()
-    password = account_password.get()
-    phone = account_phone.get()
+    name = library_name.get()
+    email = library_email.get()
+    phone = library_phone.get()
+    address = library_address.get()
 
     DB_TOKEN: ''
 
-    with open(GlobalHelper.user_json, 'r') as json_file:
-        user_info = json.load(json_file)
+    with open(GlobalHelper.library_info_json, 'r') as json_file:
+        library_info = json.load(json_file)
 
     if name == '':
         messagebox.showerror("Error", "Name field is required")
         return
     else:
-        user_info['name'] = name
+        library_info['title'] = name
 
-    if address != '':
-        user_info['address'] = address
+    if email != '':
+        library_info['email'] = email
 
     if phone != '':
-        user_info['phone'] = phone
+        library_info['phone'] = phone
+
+    if address != '':
+        library_info['address'] = address
 
     if account_avatar != '':
-        user_info['avatar'] = account_avatar
+        library_info['logo'] = account_avatar
 
 
     mydb = mysql.connector.connect(host=GlobalHelper.SERVER_HOST, user=GlobalHelper.SERVER_USERNAME, password=GlobalHelper.SERVER_PASSWORD, database=GlobalHelper.SERVER_DATABASE)
     mycursor = mydb.cursor()
-    if password != '':
-        HASH_PASS = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        sql = "UPDATE users SET name=%s, avatar=%s, password=%s, address=%s, phone=%s WHERE token=%s"
-        val = (user_info['name'], user_info['avatar'], HASH_PASS, user_info['address'], user_info['phone'], user_info['token'])
-        mycursor.execute(sql, val)
-        mydb.commit()
-    else:
-        sql = "UPDATE users SET name=%s, avatar=%s, address=%s, phone=%s WHERE token=%s"
-        val = (user_info['name'], user_info['avatar'], user_info['address'], user_info['phone'], user_info['token'])
-        mycursor.execute(sql, val)
-        mydb.commit()
 
-    with open(GlobalHelper.user_json, 'w') as json_file:
-        json.dump(user_info, json_file)
+    sql = "UPDATE libraries SET title=%s, logo=%s, email=%s, phone=%s, address=%s  WHERE id=%s"
+    val = (library_info['title'], library_info['logo'], library_info['email'],  library_info['phone'], library_info['address'], library_info['id'])
+    mycursor.execute(sql, val)
+    mydb.commit()
 
+    with open(GlobalHelper.library_info_json, 'w') as json_file:
+        json.dump(library_info, json_file)
     _Root_.show_frame("Dashboard_Manager")
 
 def manage_library(Root_Frame, _Root_):
-    json_file = open(GlobalHelper.user_json, 'r')
+    json_file = open(GlobalHelper.library_info_json, 'r')
     logged_user = json.load(json_file)
 
-    if logged_user['name'] is not None:
-        account_name.set(str(logged_user['name']))
+    if logged_user['title'] is not None:
+        library_name.set(str(logged_user['title']))
+
+    if logged_user['email'] is not None:
+        library_email.set(str(logged_user['email']))
 
     if logged_user['phone'] is not None:
-        account_phone.set(str(logged_user['phone']))
+        library_phone.set(str(logged_user['phone']))
 
     if logged_user['address'] is not None:
-        account_address.set(str(logged_user['address']))
+        library_address.set(str(logged_user['address']))
 
     Root_Frame.grid_columnconfigure(0, weight=1)
     Root_Frame.grid_columnconfigure(1, weight=1)
@@ -117,11 +115,11 @@ def manage_library(Root_Frame, _Root_):
 
     Label(screen_left_frame, text="Manage Library", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(
         row=1, column=1, pady=10)
-    if logged_user['avatar'] is None:
-        Label(screen_left_frame, text="Select Avatar", bg=GlobalHelper.gray_color, height=12, width=32,
+    if logged_user['logo'] is None:
+        Label(screen_left_frame, text="Select Library Logo", bg=GlobalHelper.gray_color, height=8, width=24,
               font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1)
     else:
-        render_avatar(screen_left_frame, str(logged_user['avatar']))
+        render_avatar(screen_left_frame, str(logged_user['logo']))
 
     Button(screen_left_frame, text="CHOOSE LOGO", bg=GlobalHelper.theme_color,
            command=lambda: SelectImage(Root_Frame, _Root_, screen_left_frame),
@@ -143,20 +141,19 @@ def manage_library(Root_Frame, _Root_):
 
     Label(screen_login_frame, text="Library Details", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 15)).grid(row=0, column=1, pady=10, sticky=NW,)
     Label(screen_login_frame, text="Library Name", bg='#ffffff').grid(row=1, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=account_name, width=70, relief=SOLID).grid(row=2, column=1, pady=3, ipady=5)
+    Entry(screen_login_frame, textvariable=library_name, width=70, relief=SOLID).grid(row=2, column=1, pady=3, ipady=5)
 
-    Label(screen_login_frame, text="Phone", bg='#ffffff').grid(row=3, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=account_phone, width=70, relief=SOLID).grid(row=4, column=1, pady=3, ipady=5)
+    Label(screen_login_frame, text="Email Address", bg='#ffffff').grid(row=3, column=1, pady=1, sticky=NW, )
+    Entry(screen_login_frame, textvariable=library_email, width=70, relief=SOLID).grid(row=4, column=1, pady=3, ipady=5)
 
-    Label(screen_login_frame, text="Street Address", bg='#ffffff').grid(row=5, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=account_address, width=70, relief=SOLID).grid(row=6, column=1, pady=3,
+    Label(screen_login_frame, text="Phone", bg='#ffffff').grid(row=5, column=1, pady=1, sticky=NW, )
+    Entry(screen_login_frame, textvariable=library_phone, width=70, relief=SOLID).grid(row=6, column=1, pady=3,
                                                                                          ipady=5)
-
-    Label(screen_login_frame, text="New Password", bg='#ffffff').grid(row=7, column=1, pady=1, sticky=NW)
-    Entry(screen_login_frame, textvariable=account_password, show='*', width=70, relief=SOLID).grid(row=8, column=1,
+    Label(screen_login_frame, text="Street Address", bg='#ffffff').grid(row=7, column=1, pady=1, sticky=NW)
+    Entry(screen_login_frame, textvariable=library_address, width=70, relief=SOLID).grid(row=8, column=1,
                                                                                                     pady=3, ipady=5)
 
-    Button(screen_login_frame, text="Update", bg=GlobalHelper.theme_color, command=lambda: SaveUpdates(_Root_),
+    Button(screen_login_frame, text="Save", bg=GlobalHelper.theme_color, command=lambda: SaveUpdates(_Root_),
            fg='#fff', width='25', height='1', borderwidth=0, relief=SOLID).grid(row=9, column=1, ipady=5, pady=10,
                                                                                 sticky=NW)
     Button(screen_login_frame, text="Cancel", bg=GlobalHelper.gray_color,

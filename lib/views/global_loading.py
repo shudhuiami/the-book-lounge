@@ -21,22 +21,18 @@ account_phone = StringVar()
 account_password = StringVar()
 
 
-def library_list(Root_Frame, _Root_):
+def global_loading(Root_Frame, _Root_):
+    json_file = open(GlobalHelper.user_json, 'r')
+    logged_user = json.load(json_file)
 
     Root_Frame.grid_columnconfigure(0, weight=1)
     Root_Frame.grid_columnconfigure(1, weight=1)
+    Root_Frame.grid_columnconfigure(2, weight=1)
     Root_Frame.grid_rowconfigure(0, weight=1)
+    Root_Frame.grid_rowconfigure(1, weight=1)
+    Root_Frame.grid_rowconfigure(2, weight=1)
 
-    screen_left_frame = Frame(Root_Frame, bg='#fff')
-    screen_left_frame.grid(row=0, column=0, sticky="nsew")
-    screen_left_frame.grid_columnconfigure(0, weight=1)
-    screen_left_frame.grid_columnconfigure(1, weight=1)
-    screen_left_frame.grid_columnconfigure(2, weight=1)
-    screen_left_frame.grid_rowconfigure(0, weight=1)
-    screen_left_frame.grid_rowconfigure(1, weight=0)
-    screen_left_frame.grid_rowconfigure(2, weight=0)
-    screen_left_frame.grid_rowconfigure(3, weight=0)
-    screen_left_frame.grid_rowconfigure(4, weight=1)
+    Label(Root_Frame, text="Loading...", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(row=0,column=1,pady=10,)
 
     ##Show Frame
     Root_Frame.tkraise()

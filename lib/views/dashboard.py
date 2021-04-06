@@ -5,14 +5,29 @@ import json
 def logout(_Root_):
     with open(GlobalHelper.user_json, 'r') as json_file:
         user_info = json.load(json_file)
-    user_info['name'] = ""
-    user_info['email'] = ""
-    user_info['address'] = ""
-    user_info['avatar'] = ""
-    user_info['phone'] = ""
-    user_info['token'] = ""
+    user_info['id'] = None
+    user_info['name'] = None
+    user_info['email'] = None
+    user_info['address'] = None
+    user_info['avatar'] = None
+    user_info['phone'] = None
+    user_info['token'] = None
     with open(GlobalHelper.user_json, 'w') as json_file:
         json.dump(user_info, json_file)
+
+    with open(GlobalHelper.library_info_json, 'r') as json_file_library:
+        library_info = json.load(json_file_library)
+    library_info['id'] = None
+    library_info['title'] = None
+    library_info['logo'] = None
+    library_info['email'] = None
+    library_info['phone'] = None
+    library_info['address'] = None
+    library_info['about_us'] = None
+
+    with open(GlobalHelper.library_info_json, 'w') as json_file_library:
+        json.dump(user_info, json_file_library)
+
     _Root_.show_frame("Authentication_Login")
 
 def manager_dashboard(Root_Frame, _Root_):
@@ -58,12 +73,17 @@ def manager_dashboard(Root_Frame, _Root_):
     section_frame_six = Frame(Root_Frame, bg='#fff')
     section_frame_six.grid(row=3, column=1, sticky="nsew")
 
-    HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_one, 'Manage Library', 'Manage_Library')
-    HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_two, 'Manage Books', '')
-    HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_three, 'Manage Members', '')
-    HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_four, 'Manage Book Request', '')
-    HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_five, 'Manage Wishlist','')
-    HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_six, 'Manage Account', 'Manage_Account')
+    if logged_user['user_type'] == 1:
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_one, 'Manage Library', 'Manage_Library')
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_two, 'Manage Books', 'Library_Books')
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_three, 'Manage Members', 'library_Members_List')
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_four, 'Manage Account', 'Manage_Account')
+    else:
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_one, 'Libraries', 'My_Libraries')
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_two, 'Favourite Books', 'Manage_Account')
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_three, 'Request Book', '')
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_four, 'Manage Account', 'Manage_Account')
+
 
     ##Show Frame
     Root_Frame.tkraise()

@@ -1,14 +1,14 @@
 from tkinter import *
-from tkinter import messagebox
-import pathlib
 import paramiko
 
+SERVER_URL = 'http://134.209.158.52/library/'
 class GlobalHelper:
     SERVER_HOST = 'remotemysql.com'
     SERVER_USERNAME = 'cm5KWxZxSc'
     SERVER_PASSWORD = 'AAvuVZBFAX'
     SERVER_DATABASE = 'cm5KWxZxSc'
 
+    selected_library_id = 0
 
     theme_color = '#6159e6'
     gray_color = '#c9c9c9'
@@ -27,7 +27,6 @@ class GlobalHelper:
     icon_profile = PhotoImage(file='.//lib//images//home-icons//profile.png')
 
 def ViewSection(_Root_, section_path):
-    print(section_path)
     _Root_.show_frame(section_path)
 
 class HelperFunction:
@@ -45,18 +44,22 @@ class HelperFunction:
         canvas = Canvas(Inner_layer, width=90, height=90, bg='#fff', bd=0, highlightthickness=0, )
         canvas.bind("<Button-1>", lambda event:ViewSection(_root_, section_path))
         canvas.pack()
+
         if (section_title == 'Manage Library'):
             canvas.create_image(0, 0, image=GlobalHelper.icon_library, anchor=NW)
         elif (section_title == 'Manage Books'):
             canvas.create_image(0, 0, image=GlobalHelper.icon_book, anchor=NW)
         elif (section_title == 'Manage Members'):
             canvas.create_image(0, 0, image=GlobalHelper.icon_members, anchor=NW)
-        elif (section_title == 'Manage Book Request'):
-            canvas.create_image(0, 0, image=GlobalHelper.icon_question, anchor=NW)
-        elif (section_title == 'Manage Wishlist'):
-            canvas.create_image(0, 0, image=GlobalHelper.icon_wishlist, anchor=NW)
         elif (section_title == 'Manage Account'):
             canvas.create_image(0, 0, image=GlobalHelper.icon_profile, anchor=NW)
+
+        elif (section_title == 'Libraries'):
+            canvas.create_image(0, 0, image=GlobalHelper.icon_library, anchor=NW)
+        elif (section_title == 'Favourite Books'):
+            canvas.create_image(0, 0, image=GlobalHelper.icon_wishlist, anchor=NW)
+        elif (section_title == 'Request Book'):
+            canvas.create_image(0, 0, image=GlobalHelper.icon_question, anchor=NW)
 
         button_two = Label(Inner_layer, text=section_title, bg='#fff', font=("Bahnschrift SemiLight Condensed", 15))
         button_two.pack(pady=15)
@@ -70,9 +73,16 @@ class HelperFunction:
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname="134.209.158.52", username="root", password="123asd.!@#ASD", port=22)
         sftp_client = ssh.open_sftp()
-
-        # sftp_client.get('/var/www/html/library/init.txt', 'download-init.txt')
         sftp_client.put(selected_file, '/var/www/html/library/'+unique_filename)
-
         sftp_client.close()
         ssh.close()
+
+    def download_from_server(selected_dir, file_Path):
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname="134.209.158.52", username="root", password="123asd.!@#ASD", port=22)
+        sftp_client = ssh.open_sftp()
+        sftp_client.get( '/var/www/html/library/'+file_Path, selected_dir+'/'+file_Path)
+        sftp_client.close()
+        ssh.close()
+
