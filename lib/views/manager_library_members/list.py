@@ -30,9 +30,6 @@ def RemoveMember(Root_Frame, _Root_):
         return
     _Root_.show_frame("Global_Loading")
 
-    with open(GlobalHelper.library_info_json, 'r') as library_json_file:
-        library_info = json.load(library_json_file)
-
     mydb = mysql.connector.connect(host=GlobalHelper.SERVER_HOST, user=GlobalHelper.SERVER_USERNAME, password=GlobalHelper.SERVER_PASSWORD, database=GlobalHelper.SERVER_DATABASE)
     mycursor = mydb.cursor()
 

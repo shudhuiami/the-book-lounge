@@ -15,24 +15,21 @@ Selected_member_relation_id = 0
 def RemoveBook(Root_Frame, _Root_):
     global Selected_member_relation_id
     if Selected_member_relation_id == 0:
-        messagebox.showerror("Error", "Select a member first")
+        messagebox.showerror("Error", "Select a book first")
         return
     _Root_.show_frame("Global_Loading")
-
-    with open(GlobalHelper.library_info_json, 'r') as library_json_file:
-        library_info = json.load(library_json_file)
 
     mydb = mysql.connector.connect(host=GlobalHelper.SERVER_HOST, user=GlobalHelper.SERVER_USERNAME, password=GlobalHelper.SERVER_PASSWORD, database=GlobalHelper.SERVER_DATABASE)
     mycursor = mydb.cursor()
 
     _id = str(Selected_member_relation_id)
-    library_member_sql = "DELETE FROM library_members WHERE id ='"+_id+"'"
+    library_member_sql = "DELETE FROM library_books WHERE id ='"+_id+"'"
     mycursor.execute(library_member_sql)
     mydb.commit()
 
-    messagebox.showerror("Success", "Member removed Successfully")
-    render_member_list(Root_Frame, _Root_)
-    _Root_.show_frame("library_Members_List")
+    messagebox.showerror("Success", "Book removed Successfully")
+    render_books_list(Root_Frame, _Root_)
+    _Root_.show_frame("Library_Books")
     return
 
 def fields(cursor):
@@ -134,7 +131,7 @@ def manage_library_books(Root_Frame, _Root_):
 
     Button(HeaderFrame, text="Add Book", bg=GlobalHelper.theme_color, command=lambda: _Root_.show_frame("Library_Book_Create"), fg='#fff',
            height='1', borderwidth=0, relief=SOLID, width=20).grid(row=0, column=1, ipady=3, padx=5, pady=15, sticky="we")
-    Button(HeaderFrame, text="Delete Book", bg='#fc383e', command=lambda: _Root_.show_frame("Dashboard_Manager"), fg='#fff',
+    Button(HeaderFrame, text="Delete Book", bg='#fc383e', command=lambda: RemoveBook(Root_Frame, _Root_), fg='#fff',
            height='1', borderwidth=0, relief=SOLID, width=20).grid(row=0, column=2, ipady=3, padx=5, pady=15, sticky="we")
     Button(HeaderFrame, text="Back to Dashboard", bg=GlobalHelper.gray_color, command=lambda: _Root_.show_frame("Dashboard_Manager"), fg='#fff',
            height='1', borderwidth=0, relief=SOLID, width=20).grid(row=0, column=3, ipady=3, padx=5, pady=15, sticky="we")
