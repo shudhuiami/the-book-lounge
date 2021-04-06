@@ -26,7 +26,7 @@ def logout(_Root_):
     library_info['about_us'] = None
 
     with open(GlobalHelper.library_info_json, 'w') as json_file_library:
-        json.dump(user_info, json_file_library)
+        json.dump(library_info, json_file_library)
 
     _Root_.show_frame("Authentication_Login")
 
