@@ -4,11 +4,36 @@ from global_variables import GlobalHelper, HelperFunction
 import json
 import mysql.connector
 import pathlib
+from tkinter import messagebox
 
 UPLOAD_URL = str(pathlib.Path().absolute())+'\\uploads\\'
 SERVER_URL = 'http://134.209.158.52/library/'
 treev = None
 Selected_member_relation_id = 0
+
+
+def RemoveBook(Root_Frame, _Root_):
+    global Selected_member_relation_id
+    if Selected_member_relation_id == 0:
+        messagebox.showerror("Error", "Select a member first")
+        return
+    _Root_.show_frame("Global_Loading")
+
+    with open(GlobalHelper.library_info_json, 'r') as library_json_file:
+        library_info = json.load(library_json_file)
+
+    mydb = mysql.connector.connect(host=GlobalHelper.SERVER_HOST, user=GlobalHelper.SERVER_USERNAME, password=GlobalHelper.SERVER_PASSWORD, database=GlobalHelper.SERVER_DATABASE)
+    mycursor = mydb.cursor()
+
+    _id = str(Selected_member_relation_id)
+    library_member_sql = "DELETE FROM library_members WHERE id ='"+_id+"'"
+    mycursor.execute(library_member_sql)
+    mydb.commit()
+
+    messagebox.showerror("Success", "Member removed Successfully")
+    render_member_list(Root_Frame, _Root_)
+    _Root_.show_frame("library_Members_List")
+    return
 
 def fields(cursor):
     results = {}
