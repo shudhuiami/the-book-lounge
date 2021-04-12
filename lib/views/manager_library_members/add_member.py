@@ -57,7 +57,7 @@ def Add_member_to_library(Root_Frame, _Root_):
 
     Entry(Root_Frame, textvariable=member_email, relief=SOLID, width=100).grid(row=2, column=1, pady=3, ipady=5)
 
-    Button(Root_Frame, text="Create", bg=GlobalHelper.theme_color, command=lambda: AddMember(Root_Frame, _Root_),
+    Button(Root_Frame, text="Add Member", bg=GlobalHelper.theme_color, command=lambda: AddMember(Root_Frame, _Root_),
            fg='#fff', height='1', borderwidth=0, relief=SOLID, width=85).grid(row=3, column=1, ipady=5, pady=10)
 
     Button(Root_Frame, text="Cancel", bg=GlobalHelper.gray_color,

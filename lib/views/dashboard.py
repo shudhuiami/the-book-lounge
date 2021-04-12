@@ -80,8 +80,8 @@ def manager_dashboard(Root_Frame, _Root_):
         HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_four, 'Manage Account', 'Manage_Account')
     else:
         HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_one, 'Libraries', 'My_Libraries')
-        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_two, 'Favourite Books', 'Manage_Account')
-        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_three, 'Request Book', '')
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_two, 'Favourite Books', 'Favourite_Books')
+        HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_three, 'Reading List', 'Reading_List')
         HelperFunction.create_home_button(Root_Frame, _Root_, section_frame_four, 'Manage Account', 'Manage_Account')
 
 

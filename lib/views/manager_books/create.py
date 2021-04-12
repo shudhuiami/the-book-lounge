@@ -1,11 +1,11 @@
 from tkinter import *
+from tkinter import ttk
 from global_variables import GlobalHelper, HelperFunction
 import json
 from PIL import ImageTk,Image
 from tkinter import messagebox
 import mysql.connector
 from tkinter import filedialog
-import bcrypt
 import os
 import shutil
 import pathlib
@@ -19,6 +19,18 @@ book_file_path = ''
 book_name = StringVar()
 book_author = StringVar()
 book_description = None
+book_genre = ''
+def fields(cursor):
+    results = {}
+    column = 0
+    for d in cursor.description:
+        results[d[0]] = column
+        column = column + 1
+    return results
+
+def UserGenre(eventObject):
+    global book_genre
+    book_genre = eventObject.widget.get()
 
 def SelectImage(Root_Frame, _Root_, screen_left_frame):
     global book_cover
@@ -36,7 +48,6 @@ def SelectImage(Root_Frame, _Root_, screen_left_frame):
     Button(screen_left_frame, text="CHOOSE BOOK COVER", bg=GlobalHelper.theme_color,
            command=lambda: SelectImage(Root_Frame, _Root_, screen_left_frame),
            fg='#fff', width='30', height='1', borderwidth=0, relief=SOLID).grid(row=3, column=1, ipady=5, pady=5)
-
 
 def SelectFile(Root_Frame, _Root_, screen_left_frame):
     Label(screen_left_frame, text="Uploading File...", bg=GlobalHelper.theme_color, height=2, width=24, fg='#fff',
@@ -76,11 +87,16 @@ def CreateBook(_Root_):
         messagebox.showerror("Error", "Name field is required")
         return
 
+    if book_genre == '':
+        messagebox.showerror("Error", "Book genre is required")
+        return
+
+
     if author == '':
         messagebox.showerror("Error", "Author field is required")
         return
 
-    if len(description) > 1:
+    if len(description) < 1:
         messagebox.showerror("Error", "Description field is required")
         return
 
@@ -98,8 +114,8 @@ def CreateBook(_Root_):
     mydb = mysql.connector.connect(host=GlobalHelper.SERVER_HOST, user=GlobalHelper.SERVER_USERNAME, password=GlobalHelper.SERVER_PASSWORD, database=GlobalHelper.SERVER_DATABASE)
     mycursor = mydb.cursor()
 
-    library_member_sql = "INSERT INTO library_books (name, author, library_id, description, cover, file_path) VALUES (%s, %s, %s, %s, %s, %s)"
-    library_member_val = (name, author, library_info['id'], description, book_cover, book_file_path)
+    library_member_sql = "INSERT INTO library_books (name, author, genre, library_id, description, cover, file_path) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    library_member_val = (name, author, book_genre, library_info['id'], description, book_cover, book_file_path)
     mycursor.execute(library_member_sql, library_member_val)
     mydb.commit()
 
@@ -107,6 +123,14 @@ def CreateBook(_Root_):
 
 def library_create_book(Root_Frame, _Root_):
     global book_description
+
+    mydb = mysql.connector.connect(host=GlobalHelper.SERVER_HOST, user=GlobalHelper.SERVER_USERNAME, password=GlobalHelper.SERVER_PASSWORD, database=GlobalHelper.SERVER_DATABASE)
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT * FROM book_genres")
+    field_map = fields(mycursor)
+    genres_list = []
+    for row in mycursor:
+        genres_list.append(row[field_map['title']])
 
     Root_Frame.grid_columnconfigure(0, weight=1)
     Root_Frame.grid_columnconfigure(1, weight=1)
@@ -165,9 +189,18 @@ def library_create_book(Root_Frame, _Root_):
     Label(screen_login_frame, text="Book Author", bg='#ffffff').grid(row=3, column=1, pady=1, sticky=NW, )
     Entry(screen_login_frame, textvariable=book_author, width=70, relief=SOLID).grid(row=4, column=1, pady=3, ipady=5)
 
-    Label(screen_login_frame, text="Book Description", bg='#ffffff').grid(row=5, column=1, pady=1, sticky=NW, )
-    book_description = Text(screen_login_frame, width=53, height=10, relief=SOLID, font=("Bahnschrift SemiLight Condensed", 15))
-    book_description.grid(row=6, column=1, pady=3, ipady=5)
+    Label(screen_login_frame, text="User type", bg='#ffffff').grid(row=5, column=1, pady=1, sticky=NW)
+    choices = ['Library Manager', 'Library Member']
+    selected_user_type = StringVar(screen_login_frame)
+    selected_user_type.set('Library Manager')
+    user_type_select = ttk.Combobox(screen_login_frame, value=genres_list, state="readonly", width=68)
+    user_type_select.current(0)
+    user_type_select.grid(row=6, column=1, pady=3, ipady=5)
+    user_type_select.bind("<<ComboboxSelected>>", UserGenre)
+
+    Label(screen_login_frame, text="Book Description", bg='#ffffff').grid(row=7, column=1, pady=1, sticky=NW, )
+    book_description = Text(screen_login_frame, width=53, height=5, relief=SOLID, font=("Bahnschrift SemiLight Condensed", 15))
+    book_description.grid(row=8, column=1, pady=3, ipady=5)
 
     Button(screen_login_frame, text="Create", bg=GlobalHelper.theme_color, command=lambda: CreateBook(_Root_),
            fg='#fff', width='25', height='1', borderwidth=0, relief=SOLID).grid(row=9, column=1, ipady=5, pady=10,

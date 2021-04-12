@@ -96,7 +96,6 @@ def SaveUpdates(_Root_):
     _Root_.show_frame("Dashboard_Manager")
 
 def manage_account(Root_Frame, _Root_):
-    print(HelperFunction.ROOT_PATH)
     json_file = open(GlobalHelper.user_json, 'r')
     logged_user = json.load(json_file)
 
@@ -111,63 +110,51 @@ def manage_account(Root_Frame, _Root_):
 
     Root_Frame.grid_columnconfigure(0, weight=1)
     Root_Frame.grid_columnconfigure(1, weight=1)
+    Root_Frame.grid_columnconfigure(2, weight=1)
     Root_Frame.grid_rowconfigure(0, weight=1)
+    Root_Frame.grid_rowconfigure(1, weight=0)
+    Root_Frame.grid_rowconfigure(2, weight=0)
+    Root_Frame.grid_rowconfigure(3, weight=0)
+    Root_Frame.grid_rowconfigure(4, weight=0)
+    Root_Frame.grid_rowconfigure(5, weight=0)
+    Root_Frame.grid_rowconfigure(6, weight=0)
+    Root_Frame.grid_rowconfigure(7, weight=0)
+    Root_Frame.grid_rowconfigure(8, weight=0)
+    Root_Frame.grid_rowconfigure(9, weight=0)
+    Root_Frame.grid_rowconfigure(10, weight=0)
+    Root_Frame.grid_rowconfigure(11, weight=0)
+    Root_Frame.grid_rowconfigure(12, weight=0)
+    Root_Frame.grid_rowconfigure(13, weight=1)
 
-    screen_left_frame = Frame(Root_Frame, bg='#fff')
-    screen_left_frame.grid(row=0, column=0, sticky="nsew")
-    screen_left_frame.grid_columnconfigure(0, weight=1)
-    screen_left_frame.grid_columnconfigure(1, weight=1)
-    screen_left_frame.grid_columnconfigure(2, weight=1)
-    screen_left_frame.grid_rowconfigure(0, weight=1)
-    screen_left_frame.grid_rowconfigure(1, weight=0)
-    screen_left_frame.grid_rowconfigure(2, weight=0)
-    screen_left_frame.grid_rowconfigure(3, weight=0)
-    screen_left_frame.grid_rowconfigure(4, weight=1)
-
-
-    Label(screen_left_frame, text="Manage Account", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(row=1, column=1, pady=10)
+    Label(Root_Frame, text="Manage Account", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(row=1, column=1, pady=10)
     if logged_user['avatar'] is None:
-        Label(screen_left_frame, text="Select Profile Picture", bg=GlobalHelper.gray_color, height= 12, width=32,  font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1)
+        Label(Root_Frame, text="Select Profile Picture", bg=GlobalHelper.gray_color, height= 12, width=32,  font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1)
     else:
-        render_avatar(screen_left_frame, str(logged_user['avatar']))
+        render_avatar(Root_Frame, str(logged_user['avatar']))
 
-    Button(screen_left_frame, text="Choose Picture", bg=GlobalHelper.theme_color, command=lambda: SelectImage(Root_Frame, _Root_, screen_left_frame),
+    Button(Root_Frame, text="Choose Picture", bg=GlobalHelper.theme_color, command=lambda: SelectImage(Root_Frame, _Root_, Root_Frame),
            fg='#fff', width='30', height='1', borderwidth=0, relief=SOLID).grid(row=3, column=1, ipady= 5, pady=5)
 
 
 
-    screen_right_frame = Frame(Root_Frame, bg='#fff')
-    screen_right_frame.grid(row=0, column=1, sticky="nsew")
+    # Label(screen_login_frame, text="Personal Details", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 15)).grid(row=0, column=1, pady=10)
+    Label(Root_Frame, text="Name", bg='#ffffff').grid(row=4, column=1, pady=1, sticky=NW)
+    Entry(Root_Frame, textvariable=account_name, width='100', relief=SOLID).grid(row=5, column=1, pady=3, ipady=5, sticky="nsew")
 
-    # Register Frame
-    screen_right_frame.grid_columnconfigure(0, weight=1)
-    screen_right_frame.grid_columnconfigure(1, weight=1)
-    screen_right_frame.grid_columnconfigure(2, weight=1)
-    screen_right_frame.grid_rowconfigure(0, weight=2)
-    screen_right_frame.grid_rowconfigure(1, weight=1)
-    screen_right_frame.grid_rowconfigure(2, weight=1)
+    Label(Root_Frame, text="Phone", bg='#ffffff').grid(row=6, column=1, pady=1, sticky=NW, )
+    Entry(Root_Frame, textvariable=account_phone, width=70, relief=SOLID).grid(row=7, column=1, pady=3, ipady=5, sticky="nsew")
 
-    screen_login_frame = Frame(screen_right_frame, bg='#fff')
-    screen_login_frame.grid(row=1, column=1, sticky="nsew")
+    Label(Root_Frame, text="Street Address", bg='#ffffff').grid(row=8, column=1, pady=1, sticky=NW, )
+    Entry(Root_Frame, textvariable=account_address, width=70, relief=SOLID).grid(row=9, column=1, pady=3, ipady=5, sticky="nsew")
 
-    Label(screen_login_frame, text="Personal Details", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 15)).grid(row=0, column=1, pady=10)
-    Label(screen_login_frame, text="Name", bg='#ffffff').grid(row=1, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=account_name, width=70, relief=SOLID).grid(row=2, column=1, pady=3, ipady=5)
-
-    Label(screen_login_frame, text="Phone", bg='#ffffff').grid(row=3, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=account_phone, width=70, relief=SOLID).grid(row=4, column=1, pady=3, ipady=5)
-
-    Label(screen_login_frame, text="Street Address", bg='#ffffff').grid(row=5, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=account_address, width=70, relief=SOLID).grid(row=6, column=1, pady=3, ipady=5)
-
-    Label(screen_login_frame, text="New Password", bg='#ffffff').grid(row=7, column=1, pady=1, sticky=NW)
-    Entry(screen_login_frame, textvariable=account_password, show='*', width=70, relief=SOLID).grid(row=8, column=1, pady=3, ipady=5)
+    Label(Root_Frame, text="New Password", bg='#ffffff').grid(row=10, column=1, pady=1, sticky=NW)
+    Entry(Root_Frame, textvariable=account_password, show='*', width=70, relief=SOLID).grid(row=11, column=1, pady=3, ipady=5, sticky="nsew")
 
 
-    Button(screen_login_frame, text="Update", bg=GlobalHelper.theme_color, command=lambda: SaveUpdates(_Root_),
-           fg='#fff', width='25', height='1', borderwidth=0, relief=SOLID).grid(row=9, column=1, ipady=5, pady=10, sticky=NW)
-    Button(screen_login_frame, text="Cancel", bg=GlobalHelper.gray_color, command=lambda: _Root_.show_frame("Dashboard_Manager"),
-           fg='#fff', width='25', height='1', borderwidth=0, relief=SOLID).grid(row=9, column=1, ipady=5, pady=10, sticky=NE)
+    Button(Root_Frame, text="SAVE CHANGES", bg=GlobalHelper.theme_color, command=lambda: SaveUpdates(_Root_),
+           fg='#fff', width='45', height='1', borderwidth=0, relief=SOLID).grid(row=12, column=1, ipady=5, pady=10, sticky=NW)
+    Button(Root_Frame, text="BACK TO DASHBOARD", bg=GlobalHelper.gray_color, command=lambda: _Root_.show_frame("Dashboard_Manager"),
+           fg='#fff', width='45', height='1', borderwidth=0, relief=SOLID).grid(row=12, column=1, ipady=5, pady=10, sticky=NE)
 
     ##Show Frame
     Root_Frame.tkraise()

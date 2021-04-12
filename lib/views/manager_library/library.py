@@ -36,7 +36,7 @@ def render_avatar(screen_left_frame, image_file):
         tkimage = ImageTk.PhotoImage(im.resize((150, 150)))
         myvar = Label(screen_left_frame, bg='#ffffff', image=tkimage)
         myvar.image = tkimage
-        myvar.grid(row=2, column=1, sticky="nsew")
+        myvar.grid(row=2, column=1,  sticky="nsew")
 
 def SaveUpdates(_Root_):
     global account_avatar
@@ -100,66 +100,49 @@ def manage_library(Root_Frame, _Root_):
 
     Root_Frame.grid_columnconfigure(0, weight=1)
     Root_Frame.grid_columnconfigure(1, weight=1)
+    Root_Frame.grid_columnconfigure(2, weight=1)
     Root_Frame.grid_rowconfigure(0, weight=1)
+    Root_Frame.grid_rowconfigure(1, weight=0)
+    Root_Frame.grid_rowconfigure(2, weight=0)
+    Root_Frame.grid_rowconfigure(3, weight=0)
+    Root_Frame.grid_rowconfigure(4, weight=0)
+    Root_Frame.grid_rowconfigure(5, weight=0)
+    Root_Frame.grid_rowconfigure(6, weight=0)
+    Root_Frame.grid_rowconfigure(7, weight=0)
+    Root_Frame.grid_rowconfigure(8, weight=0)
+    Root_Frame.grid_rowconfigure(9, weight=0)
+    Root_Frame.grid_rowconfigure(10, weight=0)
+    Root_Frame.grid_rowconfigure(11, weight=0)
+    Root_Frame.grid_rowconfigure(12, weight=0)
+    Root_Frame.grid_rowconfigure(13, weight=1)
 
-    screen_left_frame = Frame(Root_Frame, bg='#fff')
-    screen_left_frame.grid(row=0, column=0, sticky="nsew")
-    screen_left_frame.grid_columnconfigure(0, weight=1)
-    screen_left_frame.grid_columnconfigure(1, weight=1)
-    screen_left_frame.grid_columnconfigure(2, weight=1)
-    screen_left_frame.grid_rowconfigure(0, weight=1)
-    screen_left_frame.grid_rowconfigure(1, weight=0)
-    screen_left_frame.grid_rowconfigure(2, weight=0)
-    screen_left_frame.grid_rowconfigure(3, weight=0)
-    screen_left_frame.grid_rowconfigure(4, weight=1)
-
-    Label(screen_left_frame, text="Manage Library", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(
-        row=1, column=1, pady=10)
+    Label(Root_Frame, text="Manage Library", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 25)).grid(row=1, column=1, pady=10, sticky=NW)
     if logged_user['logo'] is None:
-        Label(screen_left_frame, text="Select Library Logo", bg=GlobalHelper.gray_color, height=8, width=24,
-              font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1)
+        Label(Root_Frame, text="Select Library Logo", bg=GlobalHelper.gray_color, height=8, width=24,
+              font=("Bahnschrift SemiLight Condensed", 15)).grid(row=2, column=1, sticky="nsew")
     else:
-        render_avatar(screen_left_frame, str(logged_user['logo']))
+        render_avatar(Root_Frame, str(logged_user['logo']))
 
-    Button(screen_left_frame, text="CHOOSE LOGO", bg=GlobalHelper.theme_color,
-           command=lambda: SelectImage(Root_Frame, _Root_, screen_left_frame),
-           fg='#fff', width='30', height='1', borderwidth=0, relief=SOLID).grid(row=3, column=1, ipady=5, pady=5)
+    Button(Root_Frame, text="CHOOSE LOGO", bg=GlobalHelper.theme_color,
+           command=lambda: SelectImage(Root_Frame, _Root_, Root_Frame),
+           fg='#fff', width='30', height='1', borderwidth=0, relief=SOLID).grid(row=3, column=1, ipady=5, pady=5, sticky="nsew")
 
-    screen_right_frame = Frame(Root_Frame, bg='#fff')
-    screen_right_frame.grid(row=0, column=1, sticky="nsew")
+    Label(Root_Frame, text="Library Name", bg='#ffffff').grid(row=4, column=1, pady=1, sticky=NW)
+    Entry(Root_Frame, textvariable=library_name, width='100', relief=SOLID).grid(row=5, column=1, pady=3, ipady=5, sticky="nsew")
 
-    # Register Frame
-    screen_right_frame.grid_columnconfigure(0, weight=1)
-    screen_right_frame.grid_columnconfigure(1, weight=1)
-    screen_right_frame.grid_columnconfigure(2, weight=1)
-    screen_right_frame.grid_rowconfigure(0, weight=2)
-    screen_right_frame.grid_rowconfigure(1, weight=1)
-    screen_right_frame.grid_rowconfigure(2, weight=1)
+    Label(Root_Frame, text="Email Address", bg='#ffffff').grid(row=6, column=1, pady=1, sticky=NW, )
+    Entry(Root_Frame, textvariable=library_email, width='100', relief=SOLID).grid(row=7, column=1, pady=3, ipady=5, sticky="nsew")
 
-    screen_login_frame = Frame(screen_right_frame, bg='#fff')
-    screen_login_frame.grid(row=1, column=1, sticky="nsew")
+    Label(Root_Frame, text="Phone", bg='#ffffff').grid(row=8, column=1, pady=1, sticky=NW, )
+    Entry(Root_Frame, textvariable=library_phone, width='100', relief=SOLID).grid(row=9, column=1, pady=3, ipady=5, sticky="nsew")
+    Label(Root_Frame, text="Street Address", bg='#ffffff').grid(row=10, column=1, pady=1, sticky=NW)
+    Entry(Root_Frame, textvariable=library_address, width='100', relief=SOLID).grid(row=11, column=1, pady=3, ipady=5, sticky="nsew")
 
-    Label(screen_login_frame, text="Library Details", bg='#ffffff', font=("Bahnschrift SemiLight Condensed", 15)).grid(row=0, column=1, pady=10, sticky=NW,)
-    Label(screen_login_frame, text="Library Name", bg='#ffffff').grid(row=1, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=library_name, width=70, relief=SOLID).grid(row=2, column=1, pady=3, ipady=5)
-
-    Label(screen_login_frame, text="Email Address", bg='#ffffff').grid(row=3, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=library_email, width=70, relief=SOLID).grid(row=4, column=1, pady=3, ipady=5)
-
-    Label(screen_login_frame, text="Phone", bg='#ffffff').grid(row=5, column=1, pady=1, sticky=NW, )
-    Entry(screen_login_frame, textvariable=library_phone, width=70, relief=SOLID).grid(row=6, column=1, pady=3,
-                                                                                         ipady=5)
-    Label(screen_login_frame, text="Street Address", bg='#ffffff').grid(row=7, column=1, pady=1, sticky=NW)
-    Entry(screen_login_frame, textvariable=library_address, width=70, relief=SOLID).grid(row=8, column=1,
-                                                                                                    pady=3, ipady=5)
-
-    Button(screen_login_frame, text="Save", bg=GlobalHelper.theme_color, command=lambda: SaveUpdates(_Root_),
-           fg='#fff', width='25', height='1', borderwidth=0, relief=SOLID).grid(row=9, column=1, ipady=5, pady=10,
-                                                                                sticky=NW)
-    Button(screen_login_frame, text="Cancel", bg=GlobalHelper.gray_color,
+    Button(Root_Frame, text="SAVE CHANGES", bg=GlobalHelper.theme_color, command=lambda: SaveUpdates(_Root_),
+           fg='#fff', width='45', height='1', borderwidth=0, relief=SOLID).grid(row=12, column=1, ipady=5, pady=10, sticky=NW)
+    Button(Root_Frame, text="BACK TO DASHBOARD", bg=GlobalHelper.gray_color,
            command=lambda: _Root_.show_frame("Dashboard_Manager"),
-           fg='#fff', width='25', height='1', borderwidth=0, relief=SOLID).grid(row=9, column=1, ipady=5, pady=10,
-                                                                                sticky=NE)
+           fg='#fff', width='45', height='1', borderwidth=0, relief=SOLID).grid(row=12, column=1, ipady=5, pady=10, sticky=NE)
 
     ##Show Frame
     Root_Frame.tkraise()

@@ -280,7 +280,6 @@ def register(Root_Frame, _Root_):
     ##Show Frame
     Root_Frame.tkraise()
 
-
 def login(Root_Frame, _Root_):
     Root_Frame.grid_columnconfigure(0, weight=1)
     Root_Frame.grid_columnconfigure(1, weight=1)

@@ -11,7 +11,7 @@ class GlobalHelper:
     selected_library_id = 0
 
     theme_color = '#6159e6'
-    gray_color = '#c9c9c9'
+    gray_color = '#c7c7c7'
     user_json = '.\\lib\\_storage_\\user_info.json'
     library_info_json = '.\\lib\\_storage_\\library.json'
     logo = PhotoImage(file='.//lib//images//logo.png')
@@ -25,6 +25,18 @@ class GlobalHelper:
     icon_question = PhotoImage(file='.//lib//images//home-icons//question.png')
     icon_wishlist = PhotoImage(file='.//lib//images//home-icons//wishlist.png')
     icon_profile = PhotoImage(file='.//lib//images//home-icons//profile.png')
+
+    add_book = PhotoImage(file='.//lib//images//home-icons//add_book.png')
+    add_user = PhotoImage(file='.//lib//images//home-icons//add_user.png')
+    remove = PhotoImage(file='.//lib//images//home-icons//trash.png')
+    back = PhotoImage(file='.//lib//images//home-icons//back.png')
+    book = PhotoImage(file='.//lib//images//home-icons//book_icon.png')
+    leave = PhotoImage(file='.//lib//images//home-icons//leave_icon.png')
+    library = PhotoImage(file='.//lib//images//home-icons//bookshelf.png')
+    heart = PhotoImage(file='.//lib//images//home-icons//heart.png')
+    reading = PhotoImage(file='.//lib//images//home-icons//reading.png')
+
+    font_medium = ("Bahnschrift SemiLight Condensed", 13)
 
 def ViewSection(_Root_, section_path):
     _Root_.show_frame(section_path)
@@ -58,7 +70,7 @@ class HelperFunction:
             canvas.create_image(0, 0, image=GlobalHelper.icon_library, anchor=NW)
         elif (section_title == 'Favourite Books'):
             canvas.create_image(0, 0, image=GlobalHelper.icon_wishlist, anchor=NW)
-        elif (section_title == 'Request Book'):
+        elif (section_title == 'Reading List'):
             canvas.create_image(0, 0, image=GlobalHelper.icon_question, anchor=NW)
 
         button_two = Label(Inner_layer, text=section_title, bg='#fff', font=("Bahnschrift SemiLight Condensed", 15))

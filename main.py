@@ -41,6 +41,10 @@ class __Root__:
             my_libraries_view()
         elif path == 'Member_Library_books':
             library_books_view()
+        elif path == 'Reading_List':
+            member_reading_book_view()
+        elif path == 'Favourite_Books':
+            member_favourite_book_view()
 
 
 
@@ -62,8 +66,10 @@ Library_Member_Add = Frame(root, bg='#fff')
 Global_Loading_View = Frame(root, bg='#fff')
 My_Libraries = Frame(root, bg='#fff')
 Member_Library_Books = Frame(root, bg='#fff')
+Member_Reading_List = Frame(root, bg='#fff')
+Member_Favourite_List = Frame(root, bg='#fff')
 
-for frame in (Authentication_Login, Authentication_Register, Dashboard_Manager, Manage_Account, Manage_Library, Library_Books, Library_Book_Create, Library_Members_List, Library_Member_Add, Global_Loading_View, My_Libraries, Member_Library_Books):
+for frame in (Authentication_Login, Authentication_Register, Dashboard_Manager, Manage_Account, Manage_Library, Library_Books, Library_Book_Create, Library_Members_List, Library_Member_Add, Global_Loading_View, My_Libraries, Member_Library_Books, Member_Reading_List, Member_Favourite_List):
     frame.grid(row=0, column=0, sticky='nsew')
 
 
@@ -84,6 +90,8 @@ import lib.views.manager_library_members.add_member as member_add_to_library
 
 import lib.views.member_libraries.list as my_libraries
 import lib.views.member_libraries.library_books as member_library_books
+import lib.views.member_libraries.reading_books as member_reading_list
+import lib.views.member_libraries.favourite_books as member_favourite_list
 
 # import lib.views.library_list as library_list
 import lib.views.global_loading as global_loading
@@ -125,6 +133,13 @@ def library_member_add_view():
 
 def global_loading_view():
     global_loading.global_loading(Global_Loading_View, __Root__)
+
+def member_reading_book_view():
+    member_reading_list.member_reading_books(Member_Reading_List, __Root__)
+
+def member_favourite_book_view():
+    member_favourite_list.member_favourite_books(Member_Reading_List, __Root__)
+
 
 with open(GlobalHelper.user_json) as json_file:
     user_info = json.load(json_file)
